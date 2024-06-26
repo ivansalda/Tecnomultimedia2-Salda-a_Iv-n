@@ -1,0 +1,6 @@
+class Trazos {
+constructor(){
+
+}
+
+}
