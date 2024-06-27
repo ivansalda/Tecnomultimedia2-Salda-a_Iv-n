@@ -59,42 +59,48 @@ function setup() {
   preFrecuencia = 0;
 
   //----------------------------------------------------------
-  for (let i = 0; i < 50; i++) {
-    CieloArre[i] = new Cielo(0)
-  }
-  for (let i = 0; i < 50; i++) {
-    MarArre[i] = new Mar(0)
-  }
+  // for (let i = 0; i < 50; i++) {
+  //   CieloArre[i] = new Cielo(0)
+  // }
+  // for (let i = 0; i < 50; i++) {
+  //   MarArre[i] = new Mar(0)
+  // }
 
 }
 
 function draw() {
-
+  if (frameRate() >= 60) {
+    frameRate (60);
+  }
   amplitudCruda = micro.getLevel();      //volumen del sonido
   amplitud = lerp(amplitudCruda, preAmplitud, 0.5);   //suavizar input de amplitud
   amplitud = constrain(amplitudCruda, minAmplitud, maxAmplitud); //Controla que los minimos y maximos sean los limites
-
+  varAmplitud = amplitud - preAmplitud;
   frecuencia = lerp(frecuenciaCruda, preFrecuencia, 0.5);   //suavizar input de frecuencia
   frecuencia = constrain(frecuencia, minFrecuencia, maxFrecuencia); //Controla que los minimos y maximos sean los limites
 
 
   haySonido = amplitud > minAmplitud
 
-  background(52, 60, 95, 97);
-  if (visible == false && haySonido) {
-    for (let i = 0; i < 50; i++) {
-      CieloArre[i] = new Cielo(0)
 
+
+  background(52, 40, 95, 97);
+
+
+  if (visible == false && haySonido) {
+    // console.log (int(random(cantidadTrazos)));
+    // image (trazos[int (random(cantidadTrazos))],200,200,200,200);
+    for (let i = 0; i < 80; i++) {
+      CieloArre[i] = new Cielo(trazos[int (random(cantidadTrazos))]);
+      MarArre[i] = new Mar (trazos[int (random(cantidadTrazos))]);
     }
-    for (let i = 0; i < 50; i++) {
-      MarArre[i] = new Mar(0)
-    }
+   
     visible = true;
 
   }
 
   if (visible == true) {
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 80; i++) {
       CieloArre[i].mover();
       // CieloArre[i].CamColor(map(frecuenciaCruda, minFrecuencia, maxFrecuencia, 340, 260));
       MarArre[i].mover();
@@ -104,29 +110,26 @@ function draw() {
 
         MarArre[i].CamColor(map(frecuenciaCruda, minFrecuencia, maxFrecuencia, 340, 260));
         CieloArre[i].CamColor(map(frecuenciaCruda, minFrecuencia, maxFrecuencia, 340, 260));
+        if (varAmplitud > 0.2 ) {
+          CieloArre[i].colorTormenta ();
+          MarArre[i].colorTormenta();
+
+        }
       } else {
-
-        let Delay = 15 * frameRate();
-        let preDelay = 2 * frameRate();
-
+        let Delay = 30 * getFrameRate();
+        let preDelay = 16 * getFrameRate();
         if (silencio < Delay) {
           silencio++;
           if (silencio > preDelay) {
             MarArre[i].CamColor(map(silencio, preDelay, Delay, MarArre[i].color, 194));
-            CieloArre[i].CamColor(map(silencio, preDelay, Delay,CieloArre[i].color, 194));
+            CieloArre[i].CamColor(map(silencio, preDelay, Delay, CieloArre[i].color, 194));
           }
         }
-
-
       }
     }
   }
 
-  // fill(0);
-  // rect(200, 200, 500, 100);
-  // fill(255);
-  // textSize(30);
-  // text("A: " + silencio, 200, 200, 400, 400);
+console.log (amplitud);
 
   preAmplitud = amplitud;       //guardar datos del último sonido
   preFrecuencia = frecuencia;

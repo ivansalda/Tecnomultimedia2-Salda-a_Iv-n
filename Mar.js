@@ -6,21 +6,41 @@ class Mar {
         this.posY = random(this.magic, height);
         this.tam = random(0, 50);
         this.color = 125;
-
+        this.Tormenta = false;
+        this.TTormenta = 0;
     }
 
     mover() {
         push()
-        this.tam = map(this.posY, this.magic, height, 20,80);
+        this.tam = map(this.posY, this.magic, height, 35,120);
         //let colorposta = map (dist(this.posX, this.posY,width/2,this.magic), 0, height/2, 52, this.color);
-        fill(this.color, 100, 100);
-        ellipse(this.posX, this.posY, this.tam);
+        let Brillo;
+        let satu;
+        let colorposta;
+        if (this.Tormenta == false) {
+            colorposta = this.color;
+            Brillo = map(dist(this.posX, this.posY, width / 2, this.magic), 0, height, 100, 60);
+            satu = map(dist(this.posX, this.posY, width / 2, this.magic), 0, height / 3, 0, 100);
+        } else {
+            colorposta = 360;
+            Brillo = 60;
+            satu = 70;
+            this.TTormenta++;
+            if (this.TTormenta > frameRate()) {
+                this.Tormenta = false;
+                this.TTormenta = 0;
+            }
+        }
 
         if (this.posX < width) {
             this.posX += 5;
         } else {
             this.posX -= width;
         }
+        // fill(colorposta, satu, Brillo);
+        // ellipse(this.posX, this.posY, this.tam);
+        tint(colorposta, satu, Brillo);
+        image (this.imagen,this.posX,this.posY,this.tam*3,this.tam);
         pop()
 
     }
@@ -29,6 +49,9 @@ class Mar {
         this.color = P;
 
 
+    }
+    colorTormenta() {
+        this.Tormenta = true;
     }
 
 }
