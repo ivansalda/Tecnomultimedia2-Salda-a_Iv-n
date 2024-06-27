@@ -1,7 +1,7 @@
 //-------->Link al video: 
 
 
-//-------->Link a la pagina:
+//-------->Link a la pagina:https://ivansalda.github.io/Tecnomultimedia2-Salda-a_Iv-n/
 
 
 //manchas que caigan y que se muevan en horizontal 
