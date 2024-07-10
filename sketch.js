@@ -1,7 +1,7 @@
 //-------->Link al video: 
 
 
-//-------->Link a la pagina:https://ivansalda.github.io/Tecnomultimedia2-Salda-a_Iv-n/
+//-------->Link a la pagina: https://ivansalda.github.io/Tecnomultimedia2-Salda-a_Iv-n/
 
 
 //manchas que caigan y que se muevan en horizontal 
@@ -10,10 +10,12 @@
 //agregar el parametro para que los colores cambian con el mouse y despues el sonido (Variable).
 let MarArre = [];
 let CieloArre = [];
+let AcentoArre = [];
 let trazos = [];
 let cantidadTrazos = 13;
 let Cielo1;
 let Mar1;
+
 let visible = false;
 // ----------------- SONIDO ----------------------------------------------------------
 let micro, audioContext;
@@ -44,12 +46,14 @@ function preload() {
 }
 
 function setup() {
-  let canvas = createCanvas(windowWidth / 2.5, windowHeight);
+  let canvas = createCanvas(windowWidth / 3, windowHeight);
   canvas.position(windowWidth / 2 - width / 2, windowHeight / 2 - height / 2);
   imageMode(CENTER);
   colorMode(HSB, 360, 100, 100, 100);
   Cielo1 = new Cielo(0);
   Mar1 = new Mar(0);
+  
+
   //------------------------ SONIDO-------------------------
   audioContext = getAudioContext();
   micro = new p5.AudioIn();
@@ -70,7 +74,7 @@ function setup() {
 
 function draw() {
   if (frameRate() >= 60) {
-    frameRate (60);
+    frameRate(60);
   }
   amplitudCruda = micro.getLevel();      //volumen del sonido
   amplitud = lerp(amplitudCruda, preAmplitud, 0.5);   //suavizar input de amplitud
@@ -90,28 +94,77 @@ function draw() {
   if (visible == false && haySonido) {
     // console.log (int(random(cantidadTrazos)));
     // image (trazos[int (random(cantidadTrazos))],200,200,200,200);
-    for (let i = 0; i < 80; i++) {
-      CieloArre[i] = new Cielo(trazos[int (random(cantidadTrazos))]);
-      MarArre[i] = new Mar (trazos[int (random(cantidadTrazos))]);
+    for (let i = 0; i < 160; i++) {
+      CieloArre[i] = new Cielo(trazos[int(random(cantidadTrazos))]);
     }
-   
+    for (let i = 0; i < 70; i++) {
+      MarArre[i] = new Mar(trazos[int(random(cantidadTrazos))]);
+    }
+    for (let i = 0; i < 20; i++) {
+      AcentoArre[i] = new Acento(trazos[int(random(cantidadTrazos))]);
+    }
+
+
     visible = true;
 
   }
 
   if (visible == true) {
-    for (let i = 0; i < 80; i++) {
+    for (let i = 0; i < 160; i++) {
       CieloArre[i].mover();
       // CieloArre[i].CamColor(map(frecuenciaCruda, minFrecuencia, maxFrecuencia, 340, 260));
-      MarArre[i].mover();
       // MarArre[i].CamColor(map(frecuenciaCruda, minFrecuencia, maxFrecuencia, 340, 260)); 
       if (haySonido === true) {
         silencio = 0;
 
-        MarArre[i].CamColor(map(frecuenciaCruda, minFrecuencia, maxFrecuencia, 340, 260));
         CieloArre[i].CamColor(map(frecuenciaCruda, minFrecuencia, maxFrecuencia, 340, 260));
-        if (varAmplitud > 0.2 ) {
-          CieloArre[i].colorTormenta ();
+        if (varAmplitud > 0.2) {
+          CieloArre[i].colorTormenta();
+
+        }
+      } else {
+        let Delay = 30 * getFrameRate();
+        let preDelay = 16 * getFrameRate();
+        if (silencio < Delay) {
+          silencio++;
+          if (silencio > preDelay) {
+            CieloArre[i].CamColor(map(silencio, preDelay, Delay, CieloArre[i].color, 194));
+          }
+        }
+      }
+    }
+    for (let i = 0; i < 20; i++) {
+      AcentoArre[i].mover();
+      if (haySonido === true) {
+        silencio = 0;
+
+
+        if (varAmplitud > 0.2) {
+
+          AcentoArre[i].colorTormenta();
+
+        }
+      // } else {
+      //   let Delay = 30 * getFrameRate();
+      //   let preDelay = 16 * getFrameRate();
+        // if (silencio < Delay) {
+        //   silencio++;
+        //   if (silencio > preDelay) {
+        //     AcentoArre[i].CamColor(map(silencio, preDelay, Delay, MarArre[i].color, 194));
+        //   }
+        // }
+      }
+    }
+
+    for (let i = 0; i < 70; i++) {
+      MarArre[i].mover();
+      if (haySonido === true) {
+        silencio = 0;
+
+        MarArre[i].CamColor(map(frecuenciaCruda, minFrecuencia, maxFrecuencia, 340, 260));
+
+        if (varAmplitud > 0.2) {
+
           MarArre[i].colorTormenta();
 
         }
@@ -122,14 +175,15 @@ function draw() {
           silencio++;
           if (silencio > preDelay) {
             MarArre[i].CamColor(map(silencio, preDelay, Delay, MarArre[i].color, 194));
-            CieloArre[i].CamColor(map(silencio, preDelay, Delay, CieloArre[i].color, 194));
           }
         }
       }
     }
+
+  
   }
 
-console.log (amplitud);
+  console.log(amplitud);
 
   preAmplitud = amplitud;       //guardar datos del último sonido
   preFrecuencia = frecuencia;

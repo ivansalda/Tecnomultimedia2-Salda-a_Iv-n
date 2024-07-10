@@ -12,7 +12,7 @@ class Mar {
 
     mover() {
         push()
-        this.tam = map(this.posY, this.magic, height, 35,120);
+        this.tam = map(this.posY, this.magic, height, 100,160);
         //let colorposta = map (dist(this.posX, this.posY,width/2,this.magic), 0, height/2, 52, this.color);
         let Brillo;
         let satu;

@@ -1,11 +1,11 @@
-class Cielo {
+class Acento {
     constructor(i) {
         this.imagen = i;
         this.magic = height * 2 / 3;
         this.posY = random(this.magic);
         this.posX = random(width);
         this.tam = random(0, 50);
-        this.color = 125;
+        this.color = 53;
         this.Tormenta = false;
         this.TTormenta = 0;
         this.rotar = random(0, 360);
@@ -14,15 +14,17 @@ class Cielo {
 
     mover() {
         push()
-        this.tam = map(dist(this.posX, this.posY, width / 2, this.magic), 0, width / 2, 10, 70); //map para que decresca el circle
+        this.tam = map(dist(this.posX, this.posY, width / 2, this.magic), 0, width / 2, 30, 50); //map para que decresca el circle
         //let colorposta = map(dist(this.posX, this.posY, width / 2, this.magic), 0, height / 2, 52, this.color);
         let Brillo;
         let satu;
         let colorposta;
+        let Op;
         if (this.Tormenta == false) {
             colorposta = this.color;
-            Brillo = map(dist(this.posX, this.posY, width / 2, this.magic), 0, height, 100, 60);
-            satu = map(dist(this.posX, this.posY, width / 2, this.magic), height / 3, height / 2, 0, 100);
+            Brillo = 97;
+            satu = 100;
+            Op = map(dist(this.posX, this.posY, width / 2, this.magic), height / 4, height / 3, 100, 0);
         } else {
             colorposta = 360;
             Brillo = 60;
@@ -38,7 +40,7 @@ class Cielo {
         // ellipse(this.posX, this.posY, this.tam);
         translate(this.posX, this.posY);
         rotate(this.rotar);
-        tint(colorposta, satu, Brillo);
+        tint(colorposta, satu, Brillo,Op);
         image(this.imagen, 0, 0, this.tam * 2, this.tam);
 
 
@@ -51,13 +53,12 @@ class Cielo {
 
     }
 
-    CamColor(P) {
-        this.color = P;
+    // CamColor(P) {
+    //     this.color = P;
 
-    }
+    // }
 
     colorTormenta() {
         this.Tormenta = true;
     }
-
 }
